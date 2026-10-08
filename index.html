@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Caleb Omariba, data scientist in Nairobi, Kenya. Data pipelines, machine learning, MLOps and RAG-powered AI.">
+<title>Caleb Omariba Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single column, a hero that reads as a data flow (engineering → science → AI → impact),
+   then project "runs" each shown with its real pipeline stages as a track. */
+:root {
+  --bg: #f3f6f6;
+  --surface: #ffffff;
+  --ink: #12201f;
+  --muted: #566664;
+  --line: #d4dedd;
+  --accent: #0b6e69;
+  --accent-soft: #dcecea;
+  --signal: #c7791c;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1615; --surface: #142120; --ink: #e4eeec; --muted: #93a6a3;
+    --line: #253634; --accent: #4cc3b9; --accent-soft: #173533; --signal: #e9a24a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1615; --surface: #142120; --ink: #e4eeec; --muted: #93a6a3;
+  --line: #253634; --accent: #4cc3b9; --accent-soft: #173533; --signal: #e9a24a;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; }
+
+/* Nav */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; color: var(--ink); text-decoration: none; }
+.mono-mark {
+  width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--accent); color: var(--bg); font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+}
+.nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; flex-wrap: wrap; }
+.nav ul a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+.nav ul a:hover { color: var(--ink); }
+@media (max-width: 560px) { .nav ul { gap: 14px; } .brand span.name { display: none; } }
+
+/* Hero */
+.hero { padding-block: 72px 56px; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); display: flex; align-items: center; gap: 8px;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--signal); }
+h1 {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em;
+  font-size: clamp(44px, 8vw, 88px); line-height: 0.98; margin: 18px 0 22px; text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--accent); }
+.lede { font-size: clamp(18px, 2.2vw, 21px); max-width: 38ch; color: var(--ink); margin: 0 0 30px; text-wrap: pretty; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px;
+  font-weight: 600; font-size: 15px; text-decoration: none; border: 1px solid var(--line); color: var(--ink);
+  background: var(--surface); cursor: pointer; font-family: inherit;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.btn.primary:hover { filter: brightness(1.08); }
+
+/* Flow strip */
+.flow {
+  margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden;
+}
+.flow div { padding: 18px 20px; position: relative; min-width: 0; }
+.flow div + div { border-left: 1px solid var(--line); }
+.flow div + div::before {
+  content: ""; position: absolute; left: -7px; top: 50%; width: 12px; height: 12px; transform: translateY(-50%) rotate(45deg);
+  background: var(--surface); border-top: 1px solid var(--line); border-right: 1px solid var(--line);
+}
+.flow b { display: block; font-family: var(--font-display); font-size: 17px; font-weight: 700; }
+.flow small { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+@media (max-width: 720px) {
+  .flow { grid-template-columns: 1fr 1fr; }
+  .flow div:nth-child(3) { border-left: none; }
+  .flow div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .flow div::before { display: none; }
+}
+
+/* Sections */
+section.block { padding-block: 64px; border-top: 1px solid var(--line); }
+.section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.section-head p { margin: 0; color: var(--muted); max-width: 46ch; }
+
+/* Projects */
+.projects { display: grid; gap: 24px; }
+.project {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 28px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px;
+}
+@media (max-width: 820px) { .project { grid-template-columns: 1fr; padding: 22px; gap: 24px; } }
+.tag { font-family: var(--font-mono); font-size: 12px; color: var(--signal); letter-spacing: 0.04em; text-transform: uppercase; }
+.project h3 { font-family: var(--font-display); font-weight: 700; font-size: 25px; line-height: 1.2; margin: 8px 0 12px; text-wrap: balance; }
+.project p { margin: 0 0 18px; color: var(--muted); max-width: 60ch; }
+.stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 22px; padding: 0; list-style: none; }
+.stack li {
+  font-family: var(--font-mono); font-size: 12px; padding: 4px 9px; border-radius: 6px;
+  background: var(--accent-soft); color: var(--ink);
+}
+.links { display: flex; gap: 10px; flex-wrap: wrap; }
+.links .btn { padding: 8px 14px; font-size: 14px; }
+
+/* Pipeline stages */
+.stages-label { font-family: var(--font-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 14px; }
+.stages { list-style: none; margin: 0; padding: 0; position: relative; }
+.stages li { position: relative; padding: 0 0 18px 34px; }
+.stages li:last-child { padding-bottom: 0; }
+.stages li::before {
+  content: ""; position: absolute; left: 10px; top: 22px; bottom: -2px; width: 2px; background: var(--line);
+}
+.stages li:last-child::before { display: none; }
+.stages .mark {
+  position: absolute; left: 0; top: 2px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent); color: var(--bg); display: grid; place-items: center;
+}
+.stages .mark svg { width: 12px; height: 12px; }
+.stages strong { display: block; font-size: 15px; font-weight: 600; }
+.stages span { display: block; font-size: 14px; color: var(--muted); }
+
+/* About */
+.about { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 48px; }
+@media (max-width: 820px) { .about { grid-template-columns: 1fr; gap: 32px; } }
+.about p { margin: 0 0 16px; max-width: 62ch; font-size: 17px; }
+.highlight {
+  border-left: 3px solid var(--signal); padding: 4px 0 4px 16px; color: var(--ink); font-size: 16px; margin-top: 8px;
+}
+.skills { display: grid; gap: 22px; }
+.skills h4 { margin: 0 0 8px; font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+
+/* Contact */
+.contact { display: grid; gap: 24px; }
+.contact-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.email-box {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: clamp(15px, 2.4vw, 20px);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px;
+}
+.email-box span { user-select: all; overflow-wrap: anywhere; min-width: 0; }
+.copy-status { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+
+footer { border-top: 1px solid var(--line); padding-block: 28px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mono-mark">CO</span><span class="name">Caleb Omariba</span></a>
+    <ul>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main id="top">
+  <header class="hero wrap">
+    <div class="eyebrow"><span class="dot"></span>Data Scientist · Nairobi, Kenya</div>
+    <h1>Caleb Omariba.<br>From raw data to <em>deployed AI.</em></h1>
+    <p class="lede">I bridge data engineering and data science: building pipelines, deploying models, and turning them into business impact.</p>
+    <div class="actions">
+      <a class="btn primary" href="#projects">See my projects</a>
+      <a class="btn" href="https://github.com/calebomariba" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/caleb-data-scientist/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+
+    <div class="flow" aria-label="What I work on">
+      <div><b>Engineer</b><small>pipelines · DVC · Airflow</small></div>
+      <div><b>Model</b><small>scikit-learn · TensorFlow</small></div>
+      <div><b>Augment</b><small>RAG · LLMs · vectors</small></div>
+      <div><b>Deliver</b><small>Docker · AWS · apps</small></div>
+    </div>
+  </header>
+
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Selected projects</h2>
+        <p>End-to-end work, from data ingestion to a model or app someone can use.</p>
+      </div>
+
+      <div class="projects">
+        <article class="project">
+          <div>
+            <div class="tag">Generative AI · Financial services</div>
+            <h3>Intelligent Complaint Analysis</h3>
+            <p>A RAG-powered chatbot for CrediTrust Financial. It turns thousands of unstructured customer complaints from the CFPB dataset into answers stakeholders can act on, using semantic search and an LLM.</p>
+            <ul class="stack">
+              <li>Python</li><li>LangChain</li><li>MiniLM embeddings</li><li>ChromaDB</li><li>FAISS</li><li>Gradio</li><li>Streamlit</li><li>CI/CD</li>
+            </ul>
+            <div class="links">
+              <a class="btn" href="https://github.com/calebomariba" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </div>
+          <div>
+            <p class="stages-label">Pipeline · 5 of 5 stages complete</p>
+            <ol class="stages">
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Setup</strong><span>Project structure, Git, CI/CD, environment</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Data</strong><span>Cleaned CFPB data, analysed narrative lengths, filtered by product</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Search</strong><span>Chunking, embeddings, vector index</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>RAG core</strong><span>Retriever, generator, prompt engineering, evaluation</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>App</strong><span>Interactive web app for stakeholders</span></li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="project">
+          <div>
+            <div class="tag">MLOps · Healthcare</div>
+            <h3>End-to-End Chest Cancer Classification</h3>
+            <p>A deep learning model that classifies chest cancer from medical images, built as a full production workflow: versioned data, tracked experiments, a web app for predictions, and cloud deployment.</p>
+            <ul class="stack">
+              <li>Python</li><li>TensorFlow</li><li>scikit-learn</li><li>Pandas</li><li>MLflow</li><li>DVC</li><li>Flask</li><li>Docker</li><li>AWS</li><li>Git</li>
+            </ul>
+            <div class="links">
+              <a class="btn" href="https://github.com/calebomariba/End-to-End-Chest-Cancer-Classification-using-MLflow-DVC" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </div>
+          <div>
+            <p class="stages-label">Workflow</p>
+            <ol class="stages">
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Data versioning</strong><span>Reproducible data and pipeline stages with DVC</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Model training</strong><span>Image classification with TensorFlow</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Experiment tracking</strong><span>Parameters and metrics logged in MLflow</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Serving</strong><span>Flask web app for predictions</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Deployment</strong><span>Containerised with Docker, deployed on AWS</span></li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="project">
+          <div>
+            <div class="tag">Insurance analytics · South Africa</div>
+            <h3>ACIS Insurance Risk Analytics &amp; Predictive Pricing</h3>
+            <p>Risk analytics for a South African car insurance portfolio. I tested where risk really differs across provinces, ZIP codes and gender, then built an explainable claim-severity model as the foundation for risk-based pricing.</p>
+            <ul class="stack">
+              <li>Python</li><li>Pandas</li><li>DVC</li><li>Hypothesis testing</li><li>scikit-learn</li><li>Random Forest</li><li>SHAP</li>
+            </ul>
+            <div class="links">
+              <a class="btn" href="https://github.com/calebomariba/ACIS--insurance-risk-analytics" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+          </div>
+          <div>
+            <p class="stages-label">Pipeline · 4 of 4 tasks complete</p>
+            <ol class="stages">
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>EDA &amp; visualisation</strong><span>Key plots and a national risk heatmap of South Africa</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>DVC pipeline</strong><span>Fully reproducible, version-tracked data</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Hypothesis testing</strong><span>P-values, effect sizes, post-hoc tests, margin analysis</span></li>
+              <li><i class="mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 6.2l2.3 2.3 4.7-5"/></svg></i><strong>Modeling + SHAP</strong><span>Severity model, explainability, model comparison</span></li>
+            </ol>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="about">
+    <div class="wrap about">
+      <div>
+        <h2 style="margin-bottom:20px">About me</h2>
+        <p>I'm a data scientist with hands-on experience in machine learning, backend development and generative AI. I specialise in retrieval-augmented generation (RAG) and conversational AI.</p>
+        <p>I design end-to-end AI solutions, from data ingestion and embeddings to semantic search and context-aware responses, and I build the pipelines and APIs that keep them running at scale.</p>
+        <p class="highlight">Built and deployed a production WhatsApp chatbot powered by large language models, including Meta LLaMA and the OpenAI API.</p>
+      </div>
+      <div class="skills">
+        <div>
+          <h4>Languages &amp; data</h4>
+          <ul class="stack"><li>Python</li><li>SQL</li><li>Pandas</li><li>Power BI</li></ul>
+        </div>
+        <div>
+          <h4>Machine learning</h4>
+          <ul class="stack"><li>scikit-learn</li><li>TensorFlow</li><li>SHAP</li><li>Hypothesis testing</li></ul>
+        </div>
+        <div>
+          <h4>Generative AI</h4>
+          <ul class="stack"><li>LangChain</li><li>RAG</li><li>LLaMA</li><li>OpenAI API</li><li>ChromaDB</li><li>FAISS</li></ul>
+        </div>
+        <div>
+          <h4>Engineering &amp; MLOps</h4>
+          <ul class="stack"><li>Airflow</li><li>DVC</li><li>MLflow</li><li>Docker</li><li>Flask</li><li>AWS</li><li>Git</li><li>CI/CD</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="contact">
+    <div class="wrap contact">
+      <div class="section-head" style="margin-bottom:0">
+        <h2>Let's work together</h2>
+        <p>Open to data science, data engineering and AI roles and collaborations.</p>
+      </div>
+      <div class="email-box">
+        <span id="email">calebomariba8@gmail.com</span>
+        <button class="btn" id="copy-email" type="button">Copy email</button>
+        <span class="copy-status" id="copy-status" aria-live="polite"></span>
+      </div>
+      <div class="contact-row">
+        <a class="btn primary" href="mailto:calebomariba8@gmail.com">Send an email</a>
+        <a class="btn" href="https://www.linkedin.com/in/caleb-data-scientist/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://github.com/calebomariba" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Caleb Omariba</span>
+    <span>Nairobi, Kenya</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-email');
+  var status = document.getElementById('copy-status');
+  var email = document.getElementById('email');
+  function selectText() {
+    var r = document.createRange(); r.selectNodeContents(email);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  btn.addEventListener('click', function () {
+    var text = email.textContent.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        status.textContent = 'Copied';
+      }).catch(function () {
+        selectText(); status.textContent = 'Selected, press Ctrl+C';
+      });
+    } else {
+      selectText(); status.textContent = 'Selected, press Ctrl+C';
+    }
+  });
+})();
+</script>
+</body>
+</html>
